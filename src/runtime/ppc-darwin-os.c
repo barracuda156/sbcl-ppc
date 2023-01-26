@@ -133,15 +133,8 @@ os_context_cr_addr(os_context_t *context)
     return (os_context_register_t *) &context->uc_mcontext->PPC_DARWIN_REGIFY(ss).PPC_DARWIN_REGIFY(cr);
 }
 
-os_context_register_t *
-os_context_pc_addr(os_context_t *context)
-{
-  return &context->uc_mcontext->PPC_DARWIN_REGIFY(ss).PPC_DARWIN_REGIFY(srr0);
-}
-
-void
-os_flush_icache(os_vm_address_t address, os_vm_size_t length)
+void os_flush_icache(os_vm_address_t address, os_vm_size_t length)
 {
     /* see ppc-arch.c */
-    ppc_flush_icache(address,length);
+    ppc_flush_icache(address, length);
 }
