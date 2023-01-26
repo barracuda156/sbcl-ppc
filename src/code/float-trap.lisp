@@ -117,6 +117,10 @@ in effect."
       (setf (ldb float-precision-control modes)
             (or (cdr (assoc precision +precision-mode-alist+))
                 (error "unknown precision mode: ~S" precision))))
+    ;; FIXME: This apparently doesn't work on Darwin
+    ;; Perhaps need to pull over from gfortran implementations.
+    ;; fenv.h declares functions but does not implement them.
+    #-(and darwin ppc)
     (setf (floating-point-modes) modes))
   (values))
 

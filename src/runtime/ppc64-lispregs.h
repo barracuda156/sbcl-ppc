@@ -1,5 +1,15 @@
+#if defined LISP_FEATURE_DARWIN
+#if defined __ASSEMBLER__
+#define REG(num) r##num
+#define FREG(num) f##num
+#else
 #define REG(num) num
 #define FREG(num) num
+#endif
+#else
+#define REG(num) num
+#define FREG(num) num
+#endif
 
 #define NREGS 32
 
@@ -10,6 +20,7 @@
 #define reg_ZERO      REG(0)    /* Should always contain 0 in lisp */
 #define reg_NSP       REG(1)    /* The number/C stack pointer */
 #define reg_TOC       REG(2)    /* ABI-reserved GOT + small data pointer */
+                                /* On Darwin available for general use. */
 #define reg_NL0       REG(3)    /* FF param/result 1 */
 #define reg_NL1       REG(4)    /* FF param/result 2 */
 #define reg_NL2       REG(5)    /* FF param 3 */

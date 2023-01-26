@@ -24,8 +24,8 @@
 ;;; This is like CONTEXT-REGISTER, but returns the value of a float
 ;;; register. FORMAT is the type of float to return.
 
-;;; FIXME: Whether COERCE actually knows how to make a float out of a
-;;; long is another question. This stuff still needs testing.
+;;; FIXME: Whether COERCE actually knows how to make a float out of
+;;; a long is another question. This stuff still needs testing.
 #+nil
 (define-alien-routine ("os_context_fpregister_addr" context-float-register-addr)
   (* long)
@@ -46,7 +46,8 @@
 ;;; Given a signal context, return the floating point modes word in
 ;;; the same format as returned by FLOATING-POINT-MODES.
 ;;;
-;;; FIXME: surely this must be accessible somewhere under *BSD?
+;;; FIXME: surely this must be accessible somewhere under *BSD on Darwin?
+;;; Check implementations for FP in gfortran.
 #+linux
 (define-alien-routine ("os_context_fp_control" context-floating-point-modes)
     (unsigned 32)

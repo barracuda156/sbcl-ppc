@@ -20,7 +20,8 @@
 ;;; work. This must be a power of 2 - see BYTES-REQUIRED-FOR-NUMBER-STACK.
 ;;;
 (defconstant number-stack-displacement
-  (* 2
+  (* #-darwin 2
+     #+darwin 8
      n-word-bytes))
 
 ;;;; Define the registers
