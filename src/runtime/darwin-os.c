@@ -31,6 +31,41 @@
 #include <stdlib.h>
 #include <time.h>
 #include <sys/syscall.h>
+#include <AvailabilityMacros.h>
+
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < 101200
+#include <sys/resource.h>
+
+int clock_gettime (int clock_id, struct timespec *ts)
+{
+    int returnValue = -1;
+
+    if (clock_id == CLOCK_MONOTONIC || clock_id == CLOCK_REALTIME) {
+        clock_serv_t cclock;
+        mach_timespec_t mts;
+
+        host_get_clock_service(mach_host_self(), REALTIME_CLOCK, &cclock);
+        if (clock_get_time(cclock, &mts) == 0) {
+            mach_port_deallocate(mach_task_self(), cclock);
+            ts->tv_sec = mts.tv_sec;
+            ts->tv_nsec = mts.tv_nsec;
+
+            returnValue = 0;
+        }
+    } else if (clock_id == CLOCK_PROCESS_CPUTIME_ID) {
+        struct rusage usage;
+
+        if (getrusage(RUSAGE_SELF, &usage) == 0) {
+            ts->tv_sec = usage.ru_utime.tv_sec + usage.ru_stime.tv_sec;
+            ts->tv_nsec = (usage.ru_utime.tv_usec + usage.ru_stime.tv_usec) *
+                1000;
+
+            returnValue = 0;
+        }
+    }
+    return returnValue;
+}
+#endif
 
 char *os_get_runtime_executable_path()
 {

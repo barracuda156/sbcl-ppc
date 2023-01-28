@@ -42,4 +42,12 @@ void darwin_init(void);
 typedef dispatch_semaphore_t os_sem_t;
 #endif
 
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < 101200
+
+#define CLOCK_REALTIME 0
+#define CLOCK_MONOTONIC 6
+#define CLOCK_PROCESS_CPUTIME_ID 12
+
+#endif
+
 #endif /* _DARWIN_OS_H */
