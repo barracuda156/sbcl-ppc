@@ -25,7 +25,6 @@ typedef struct __darwin_ucontext os_context_t;
 typedef struct ucontext os_context_t;
 #endif
 
-
 #else
 typedef ucontext_t os_context_t;
 #endif
@@ -37,17 +36,19 @@ typedef ucontext_t os_context_t;
 void darwin_init(void);
 
 #ifdef LISP_FEATURE_SB_THREAD
+/* No libdispatch before 10.6 and it does not work in Rosetta either. 
+   Fallback define is in os.h. */
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1060 && !defined __POWERPC__
 #define USE_DARWIN_GCD_SEMAPHORES
 #include <dispatch/dispatch.h>
 typedef dispatch_semaphore_t os_sem_t;
 #endif
+#endif
 
 #if __MAC_OS_X_VERSION_MIN_REQUIRED < 101200
-
 #define CLOCK_REALTIME 0
 #define CLOCK_MONOTONIC 6
 #define CLOCK_PROCESS_CPUTIME_ID 12
-
 #endif
 
 #endif /* _DARWIN_OS_H */
