@@ -49,8 +49,6 @@ endif
 ASSEM_SRC = ppc-assem.S
 ARCH_SRC = ppc-arch.c
 
-ifdef LISP_FEATURE_IMMOBILE_SPACE
-  GC_SRC = fullcgc.c gencgc.c traceroot.c immobile-space.c
-else
+ifdef LISP_FEATURE_GENCGC
   GC_SRC = fullcgc.c gencgc.c traceroot.c
 endif

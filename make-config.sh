@@ -571,6 +571,9 @@ case "$sbcl_os" in
         ;;
     darwin)
         printf ' :unix :bsd :darwin :mach-o' >> $ltf
+        if [ $sbcl_arch = "x86" ]; then
+            printf ' :mach-exception-handler' >> $ltf
+        fi
         if [ $sbcl_arch = "x86-64" ]; then
             darwin_version=`uname -r`
             darwin_version_major=${DARWIN_VERSION_MAJOR:-${darwin_version%%.*}}
@@ -641,10 +644,6 @@ cd "$original_dir"
 
 case "$sbcl_arch" in
   x86)
-    if [ "$sbcl_os" = "darwin" ]; then
-        echo "Unsupported configuration"
-        exit 1
-    fi
     if [ "$sbcl_os" = "win32" ]; then
         # of course it doesn't provide dlopen, but there is
         # roughly-equivalent magic nevertheless.
@@ -679,7 +678,7 @@ case "$sbcl_arch" in
 	tools-for-build/where-is-mcontext > src/runtime/ppc-linux-mcontext.h || (echo "error running where-is-mcontext"; exit 1)
     elif [ "$sbcl_os" = "darwin" ]; then
         # We provide a dlopen shim, so a little lie won't hurt
-	printf ' :os-provides-dlopen' >> $ltf
+	    printf ' :os-provides-dlopen' >> $ltf
         # The default stack ulimit under darwin is too small to run PURIFY.
         # Best we can do is complain and exit at this stage
 	    if [ "`ulimit -s`" = "512" ]; then

@@ -5,8 +5,11 @@
 #include <signal.h>
 
 #ifdef __APPLE__
+#include <AvailabilityMacros.h>
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1060 && !defined __POWERPC__
 #include <dispatch/dispatch.h>
 dispatch_semaphore_t sem, sem2;
+#endif
 #else
 #include <semaphore.h>
 sem_t sem, sem2;
@@ -15,7 +18,7 @@ sem_t sem, sem2;
 void
 wait_a_bit(void)
 {
-#ifdef __APPLE__
+#ifdef __APPLE__ && __MAC_OS_X_VERSION_MIN_REQUIRED >= 1060 && !defined __POWERPC__
     dispatch_semaphore_signal(sem);
     dispatch_semaphore_wait(sem2, DISPATCH_TIME_FOREVER);
 #else
@@ -29,7 +32,7 @@ kill_non_lisp_thread(void)
 {
     pthread_t kid;
 
-#ifdef __APPLE__
+#ifdef __APPLE__ && __MAC_OS_X_VERSION_MIN_REQUIRED >= 1060 && !defined __POWERPC__
     if(!(sem = dispatch_semaphore_create(0)) ||
        !(sem2 = dispatch_semaphore_create(0))) {
         perror("dispatch_semaphore_create");
@@ -47,7 +50,7 @@ kill_non_lisp_thread(void)
         exit(1);
     }
 
-#ifdef __APPLE__
+#ifdef __APPLE__ && __MAC_OS_X_VERSION_MIN_REQUIRED >= 1060 && !defined __POWERPC__
     dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
 #else
     sem_wait(&sem);
@@ -57,7 +60,7 @@ kill_non_lisp_thread(void)
         perror("pthread_kill");
     }
 
-#ifdef __APPLE__
+#ifdef __APPLE__ && __MAC_OS_X_VERSION_MIN_REQUIRED >= 1060 && !defined __POWERPC__
     dispatch_semaphore_signal(sem2);
 #else
     sem_post(&sem2);

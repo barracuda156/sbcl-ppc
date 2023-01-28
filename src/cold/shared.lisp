@@ -366,7 +366,7 @@
          ("(and immobile-symbols (not immobile-space))"
           ":IMMOBILE-SYMBOLS requires :IMMOBILE-SPACE feature")
          ("(and system-tlabs (or (not sb-thread) (not immobile-space)))"
-          ;; I don't think it really reqires immobile-space but I haven't tried
+          ;; I don't think it really requires immobile-space but I haven't tried
           ;; it and I don't care to support that.
           ":SYSTEM-TLABS requires SB-THREAD and IMMOBILE-SPACE")
          ("(and sb-futex (not sb-thread))"
@@ -473,7 +473,7 @@
 ;;; in which case it could be elsewhere, if you prefer to keep the sources
 ;;; devoid of compilation artifacts. (The production of out-of-tree artifacts
 ;;; is not actually implemented in the generic build, however if your build
-;;; system does that by itself, then hooray for you)
+;;; system does that by itself, then hooray for you.)
 (defun stem-source-path (stem)
   (concatenate 'string (find-bootstrap-file (stem-remap-target stem)) ".lisp"))
 (compile 'stem-source-path)
