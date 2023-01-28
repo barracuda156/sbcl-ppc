@@ -245,7 +245,7 @@ extern pthread_key_t current_thread;
 # define THREAD_CSP_PAGE_SIZE os_reported_page_size
 #endif
 
-#ifdef LISP_FEATURE_WIN32
+#if defined(LISP_FEATURE_WIN32) || defined(LISP_FEATURE_MACH_EXCEPTION_HANDLER)
 #define ALT_STACK_SIZE 0
 #else
 #define ALT_STACK_SIZE 32 * SIGSTKSZ
@@ -348,13 +348,18 @@ inline static int lisp_thread_p(os_context_t __attribute__((unused)) *context) {
     return (char *)all_threads->control_stack_start < csp &&
         (char *)all_threads->control_stack_end > (char *) csp;
 #else
-    /* Can't really tell since pthreads are required to get the
-       dimensions of the C stack. */
+    /* Can't really tell since pthreads are required to get
+       the dimensions of the C stack. */
     return 1;
 #endif
 }
 
 extern void record_backtrace_from_context(void*,struct thread*);
+
+#if defined(LISP_FEATURE_MACH_EXCEPTION_HANDLER)
+extern kern_return_t mach_lisp_thread_init(struct thread *thread);
+extern void mach_lisp_thread_destroy(struct thread *thread);
+#endif
 
 typedef struct init_thread_data {
     sigset_t oldset;
