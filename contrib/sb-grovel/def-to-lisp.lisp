@@ -281,6 +281,11 @@ code:
                        ,(format nil "-mmacosx-version-min=~A"
                                 (or (sb-ext:posix-getenv "SBCL_MACOSX_VERSION_MIN")
                                      "10.4")))
+                      #+(and ppc darwin)
+                      `("-arch" "ppc"
+                       ,(format nil "-mmacosx-version-min=~A"
+                                (or (sb-ext:posix-getenv "SBCL_MACOSX_VERSION_MIN")
+                                     "10.4")))
                       #+(and x86-64 sunos) '("-m64")
                       (list "-o"
                             (namestring tmp-a-dot-out)

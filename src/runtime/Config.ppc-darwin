@@ -33,6 +33,10 @@ ifdef LISP_FEATURE_SB_LINKABLE_RUNTIME
   USE_LIBSBCL = -Wl,-force_load libsbcl.a
 endif
 
+ifdef LISP_FEATURE_SB_THREAD
+  OS_LIBS += -lpthread
+endif
+
 .PHONY: after-grovel-headers
 
 # Nothing to do.
