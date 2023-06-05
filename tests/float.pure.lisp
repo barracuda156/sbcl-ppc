@@ -98,7 +98,7 @@
   (assert (= 0.0d0 (scale-float 1.0d0 (1- most-negative-fixnum)))))
 
 (with-test (:name (:scale-float-overflow :bug-372)
-            :fails-on (or :arm64))
+            :fails-on (or :arm64 (and :darwin :ppc)))
   (flet ((test (form)
            (assert-error (funcall (checked-compile `(lambda () ,form)
                                                    :allow-style-warnings t))
@@ -135,6 +135,7 @@
 (with-test (:name (:addition-overflow :bug-372)
             :fails-on (or :arm64
                         (and :ppc :openbsd)
+                        (and :ppc :darwin)
                         (and :x86 :netbsd)))
   (assert-error
    (sb-sys:without-interrupts
@@ -155,6 +156,7 @@
 (with-test (:name (:addition-overflow :bug-372 :take-2)
             :fails-on (or :arm64
                         (and :ppc :openbsd)
+                        (and :ppc :darwin)
                         (and :x86 :netbsd)))
   (assert-error
    (sb-sys:without-interrupts
