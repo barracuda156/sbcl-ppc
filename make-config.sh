@@ -568,6 +568,9 @@ case "$sbcl_os" in
         if [ $sbcl_arch = "arm64" ]; then
             printf ' :darwin-jit :gcc-tls' >> $ltf
         fi
+        if [ $sbcl_arch = "ppc" ]; then
+             printf ' :gcc-tls' >> $ltf
+         fi
         link_or_copy $sbcl_arch-darwin-os.h target-arch-os.h
         link_or_copy bsd-os.h target-os.h
         link_or_copy Config.$sbcl_arch-darwin Config
