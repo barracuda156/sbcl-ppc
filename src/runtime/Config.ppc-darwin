@@ -9,8 +9,8 @@
 # provided with absolutely no warranty. See the COPYING and CREDITS
 # files for more information.
 
-CFLAGS = -g -Wall -O2 -fdollars-in-identifiers -mmacosx-version-min=10.4
-LINKFLAGS += -mmacosx-version-min=10.4
+CFLAGS = -g -Wall -O2 -fdollars-in-identifiers -mmacosx-version-min=@MACOSX_DEPLOYMENT_TARGET@
+LINKFLAGS += -mmacosx-version-min=@MACOSX_DEPLOYMENT_TARGET@
 
 OS_SRC = bsd-os.c darwin-os.c ppc-darwin-os.c
 
@@ -18,8 +18,6 @@ OS_LIBS = -lSystem -lc
 ifdef LISP_FEATURE_SB_CORE_COMPRESSION
   OS_LIBS += -lz
 endif
-
-CC = gcc
 
 ASSEM_SRC = ppc-assem.S
 ARCH_SRC = ppc-arch.c
