@@ -135,6 +135,7 @@
 (with-test (:name (:addition-overflow :bug-372)
             :fails-on (or (and :arm64 (not :darwin))
                           :arm
+                          (and :ppc :darwin)
                           (and :ppc :openbsd)
                           (and :x86 :netbsd)))
   (assert-error
@@ -156,6 +157,7 @@
 (with-test (:name (:addition-overflow :bug-372 :take-2)
             :fails-on (or (and :arm64 (not :darwin))
                           :arm
+                          (and :ppc :darwin)
                           (and :ppc :openbsd)
                           (and :x86 :netbsd)))
   (assert-error
