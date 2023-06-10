@@ -37,6 +37,7 @@ typedef ucontext_t os_context_t;
 void darwin_init(void);
 
 #if defined(LISP_FEATURE_SB_THREAD) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 1060) && !defined(__ppc__)
+/* PowerPC is excluded for the time-being, since eventhough 10.6 does have dispatch.h, libdispatch is not supported for it. */
 #define USE_DARWIN_GCD_SEMAPHORES
 #include <dispatch/dispatch.h>
 typedef dispatch_semaphore_t os_sem_t;

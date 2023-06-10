@@ -22,18 +22,21 @@
 #include <limits.h>
 #include <mach-o/dyld.h>
 #include "arch.h"
-#include "interr.h"                     /* for declaration of lose */
+#include "interr.h"             /* for declaration of lose */
 
-#ifdef LISP_FEATURE_SB_THREAD
-#error "Define threading support functions"
-#else
 int arch_os_thread_init(struct thread *thread) {
-    return 1;                   /* success */
-}
-int arch_os_thread_cleanup(struct thread *thread) {
-    return 1;                   /* success */
-}
+#ifdef LISP_FEATURE_SB_THREAD
+#warning "Check threading support functions"
 #endif
+    return 1;                   /* success */
+}
+
+int arch_os_thread_cleanup(struct thread *thread) {
+#ifdef LISP_FEATURE_SB_THREAD
+#warning "Check threading support functions"
+#endif
+    return 1;                   /* success */
+}
 
 os_context_register_t   *
 os_context_register_addr(os_context_t *context, int offset)
@@ -139,4 +142,3 @@ os_flush_icache(os_vm_address_t address, os_vm_size_t length)
     /* see ppc-arch.c */
     ppc_flush_icache(address,length);
 }
-
